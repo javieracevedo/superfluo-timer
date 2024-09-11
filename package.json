@@ -1,0 +1,11 @@
+{
+  "name": "superfluo-timer",
+  "version": "0.1.0",
+  "description": "Rubik's cube timer",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "javieracevedo",
+  "license": "ISC"
+}

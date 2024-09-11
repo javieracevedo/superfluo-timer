@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SuperFluo Timer</title>
+</head>
+<body>
+    <div id="app">
+        <h1>SuperFluo Timer</h1>
+
+        <h5>Time List</h5>
+        <ul id="time-list">
+        </ul>
+        <div id="timer">00:00:00:00</div>
+
+        <div id="start-stop-message">
+            HIT SPACE TO START/STOP
+        </div>
+    </div>
+</body>
+
+<style>
+    h1 {
+        text-align: center;
+        font-size: 56px;
+        margin: 112px auto;
+    }
+
+    h5 {
+        margin: 0;
+        margin-bottom: 8px;
+    }
+
+    #time-list {
+        width: 122px;
+        background-color: gray;
+        list-style-type: decimal;
+        height: 200px;
+        position: absolute;
+        overflow: scroll;
+        margin: 0;
+        color: white;
+    }
+
+    #timer {
+        text-align: center;
+        font-size: 56px;
+        margin-bottom: 112px;
+    }
+
+    #start-stop-message {
+        text-align: center;
+        border: 1px solid black;
+        padding: 20px;
+        max-width: fit-content;
+        margin: auto;
+    }
+</style>
+
+<script>
+
+let startTime;
+let isRunning = false;
+let timer;
+let timeList = []
+
+
+function renderTimeList(list) {
+    const listContainer = document.querySelector("#time-list")
+    listContainer.innerHTML = ""
+    
+    timeList.forEach((time) => {
+        const li = document.createElement("li")
+        li.innerText = time
+        listContainer.appendChild(li)
+    })
+}
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    let timerElement = document.querySelector("#timer");
+
+    let milliseconds 
+    let totalSeconds
+    let seconds
+    let totalMinutes
+    let minutes
+    let hours
+
+    document.addEventListener('keydown', (event) => {
+        if (event.code === 'Space') {
+            if (!isRunning) {
+                isRunning = true;
+
+                elapsedTime = 0
+                // Start the timer
+                startTime = Date.now(); // Adjust start time to keep track of paused time
+                timer = setInterval(() => {
+                    let elapsedTime = Date.now() - startTime;
+
+                    milliseconds = elapsedTime % 1000;
+                    totalSeconds = Math.floor(elapsedTime / 1000);
+                    seconds = totalSeconds % 60;
+                    totalMinutes = Math.floor(totalSeconds / 60);
+                    minutes = totalMinutes % 60;
+                    hours = Math.floor(totalMinutes / 60);
+
+                    timerElement.innerText = `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}:${milliseconds.toString().slice(0, 2)} `
+
+                    // console.log(`${hours.toString().padStart(2, "0")}h ${minutes}m ${seconds}s ${milliseconds}ms`);
+                }, 1);
+            } else {
+                timeList.push(`${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}:${milliseconds.toString().slice(0, 2)}`)
+                console.log(timeList)
+                renderTimeList()
+                clearInterval(timer);
+                isRunning = false;
+            }
+        }
+        });
+
+})
+
+
+
+</script>
+
+</html>
