@@ -19,16 +19,16 @@ SuperFluo is a Rubik's cube timer with some additional features normally not fou
 ### Version 0.2.0
 
 - [x] Display the best time, and mean of all current solves.
-- [] Add 15secs of inspection time before starting the timer
+- [ ] Add 15secs of inspection time before starting the timer
  
  
 ### Version 1.0
 
-- [] Support connecting the user's webcam to the timer.
-- [] Record webcam feed on each solve and store that recording in local storage.
-- [] Add option to show recording of each timed solve.
-- [] Add timer overlay replay and store the final recording on the cloud.
-- [] Add option to share the timer overlayed video's link
+- [ ] Support connecting the user's webcam to the timer.
+- [ ] Record webcam feed on each solve and store that recording in local storage.
+- [ ] Add option to show recording of each timed solve.
+- [ ] Add timer overlay replay and store the final recording on the cloud.
+- [ ] Add option to share the timer overlayed video's link
 
 
 ## License
