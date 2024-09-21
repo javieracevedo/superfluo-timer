@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="module" src="index.js"></script>
+
     <title>SuperFluo Timer</title>
 </head>
 <body>
@@ -81,118 +83,4 @@
         margin: auto;
     }
 </style>
-
-<script>
-function renderTimeList(timeList) {
-    const listContainer = document.querySelector("#time-list")
-    listContainer.innerHTML = ""
-    
-    timeList.forEach(({ str }) => {
-        const li = document.createElement("li")
-        li.innerText = str
-        listContainer.appendChild(li)
-    })
-}
-
-function renderStatList(list) {
-    const bestTimeElement = document.querySelector("#stat-list .best-time-val")
-    const meanElement = document.querySelector("#stat-list .mean-val")
-
-    const { str: best } = getBestTime(list)
-    const mean = getMean(list)
-
-    bestTimeElement.innerText = best
-    meanElement.innerText = mean
-}
-
-function getBestTime(list) {
-    const times =  list.map((l) => (l.hours * 60 * 60 * 1000) + (l.minutes * 60 * 1000) + (l.seconds * 1000) + l.milliseconds)
-    const minTime = Math.min(...times)
-    const indexOfMinTime = times.indexOf(minTime)
-    const bestTime = list[indexOfMinTime]
-    return bestTime;
-}
-
-function getMean(list) {
-    const average = list => list.reduce((a, l) => (a + (l.hours * 60 * 60 * 1000) + (l.minutes * 60 * 1000) + (l.seconds * 1000) + l.milliseconds), 0) / list.length;
-    const timesAverage = average(list)
-
-    const { milliseconds, seconds, minutes, hours } = getTime(timesAverage)
-
-    return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}:${milliseconds.toString().slice(0, 3)}`
-}
-
-function getTime(timeMilliseconds) {
-    const milliseconds = timeMilliseconds % 1000;
-    const totalSeconds = Math.floor(timeMilliseconds / 1000);
-    const seconds = totalSeconds % 60;
-    const totalMinutes = Math.floor(totalSeconds / 60);
-    const minutes = totalMinutes % 60;
-    const hours = Math.floor(totalMinutes / 60);
-
-    return {
-        milliseconds,
-        seconds,
-        minutes,
-        hours
-    }
-}
-
-function createTimer(timerElement) {
-    /* Separate stop timer, start timer, and record time blocks into separate functions*/
-    let startTime;
-    let milliseconds 
-    let totalSeconds
-    let seconds
-    let totalMinutes
-    let minutes
-    let hours
-    let isRunning = false;
-    let timer;
-    let timeList = []
-
-    return () => {
-        if (event.code === 'Space') {
-            if (!isRunning) {
-            isRunning = true;
-
-            elapsedTime = 0
-            startTime = Date.now(); // Adjust start time to keep track of paused time
-            timer = setInterval(() => {
-                let elapsedTime = Date.now() - startTime;
-
-                const time = getTime(elapsedTime)
-                milliseconds = time.milliseconds
-                seconds = time.seconds
-                minutes = time.minutes
-                hours = time.hours
-
-                timerElement.innerText = `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}:${milliseconds.toString().slice(0, 3)} `
-            }, 1);
-            } else {
-                const recordedTime = {
-                    hours,
-                    minutes,
-                    seconds,
-                    milliseconds,
-                    str: `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}:${milliseconds.toString().slice(0, 3)}`
-                }
-                timeList.push(recordedTime)
-                renderTimeList(timeList)
-                renderStatList(timeList)
-                clearInterval(timer);
-                isRunning = false;
-            }
-        }
-    }
-}
-
-
-document.addEventListener("DOMContentLoaded", () => {
-    const timerElement = document.querySelector("#timer");
-    const toggleTimer = createTimer(timerElement)
-    document.addEventListener('keydown', toggleTimer)
-})
-</script>
-
 </html>
