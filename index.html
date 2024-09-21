@@ -9,9 +9,16 @@
     <div id="app">
         <h1>SuperFluo Timer</h1>
 
-        <h5>Time List</h5>
-        <ul id="time-list">
-        </ul>
+        <div id="list-container">
+            <h5>Time List</h5>
+            <ul id="time-list"></ul>
+            <h5>Stats</h5>
+            <ul id="stat-list">
+                <li>Best: <span class="best-time-val"></span></li>
+                <li>Mean: <span class="mean-val"></span></li>
+            </ul>
+        </div>
+
         <div id="timer">00:00:00:00</div>
 
         <div id="start-stop-message">
@@ -21,6 +28,9 @@
 </body>
 
 <style>
+    * {
+        box-sizing: border-box;
+    }
     h1 {
         text-align: center;
         font-size: 56px;
@@ -32,15 +42,29 @@
         margin-bottom: 8px;
     }
 
+    #list-container {
+        width: 200px;
+        min-height: 200px;
+        position: absolute;
+    }
+
+    #stat-list,
     #time-list {
-        width: 122px;
+        width: 100%;
         background-color: gray;
         list-style-type: decimal;
         height: 200px;
-        position: absolute;
+        /* position: absolute; */
         overflow: scroll;
         margin: 0;
         color: white;
+        margin-bottom: 8px;
+        padding-left: 32px;
+    }
+    #stat-list {
+        list-style-type: none;
+        padding-left: 0;
+        height: fit-content;
     }
 
     #timer {
@@ -59,71 +83,116 @@
 </style>
 
 <script>
-
-let startTime;
-let isRunning = false;
-let timer;
-let timeList = []
-
-
-function renderTimeList(list) {
+function renderTimeList(timeList) {
     const listContainer = document.querySelector("#time-list")
     listContainer.innerHTML = ""
     
-    timeList.forEach((time) => {
+    timeList.forEach(({ str }) => {
         const li = document.createElement("li")
-        li.innerText = time
+        li.innerText = str
         listContainer.appendChild(li)
     })
 }
 
+function renderStatList(list) {
+    const bestTimeElement = document.querySelector("#stat-list .best-time-val")
+    const meanElement = document.querySelector("#stat-list .mean-val")
 
-document.addEventListener("DOMContentLoaded", () => {
-    let timerElement = document.querySelector("#timer");
+    const { str: best } = getBestTime(list)
+    const mean = getMean(list)
 
+    bestTimeElement.innerText = best
+    meanElement.innerText = mean
+}
+
+function getBestTime(list) {
+    const times =  list.map((l) => (l.hours * 60 * 60 * 1000) + (l.minutes * 60 * 1000) + (l.seconds * 1000) + l.milliseconds)
+    const minTime = Math.min(...times)
+    const indexOfMinTime = times.indexOf(minTime)
+    const bestTime = list[indexOfMinTime]
+    return bestTime;
+}
+
+function getMean(list) {
+    const average = list => list.reduce((a, l) => (a + (l.hours * 60 * 60 * 1000) + (l.minutes * 60 * 1000) + (l.seconds * 1000) + l.milliseconds), 0) / list.length;
+    const timesAverage = average(list)
+
+    const { milliseconds, seconds, minutes, hours } = getTime(timesAverage)
+
+    return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}:${milliseconds.toString().slice(0, 3)}`
+}
+
+function getTime(timeMilliseconds) {
+    const milliseconds = timeMilliseconds % 1000;
+    const totalSeconds = Math.floor(timeMilliseconds / 1000);
+    const seconds = totalSeconds % 60;
+    const totalMinutes = Math.floor(totalSeconds / 60);
+    const minutes = totalMinutes % 60;
+    const hours = Math.floor(totalMinutes / 60);
+
+    return {
+        milliseconds,
+        seconds,
+        minutes,
+        hours
+    }
+}
+
+function createTimer(timerElement) {
+    /* Separate stop timer, start timer, and record time blocks into separate functions*/
+    let startTime;
     let milliseconds 
     let totalSeconds
     let seconds
     let totalMinutes
     let minutes
     let hours
+    let isRunning = false;
+    let timer;
+    let timeList = []
 
-    document.addEventListener('keydown', (event) => {
+    return () => {
         if (event.code === 'Space') {
             if (!isRunning) {
-                isRunning = true;
+            isRunning = true;
 
-                elapsedTime = 0
-                // Start the timer
-                startTime = Date.now(); // Adjust start time to keep track of paused time
-                timer = setInterval(() => {
-                    let elapsedTime = Date.now() - startTime;
+            elapsedTime = 0
+            startTime = Date.now(); // Adjust start time to keep track of paused time
+            timer = setInterval(() => {
+                let elapsedTime = Date.now() - startTime;
 
-                    milliseconds = elapsedTime % 1000;
-                    totalSeconds = Math.floor(elapsedTime / 1000);
-                    seconds = totalSeconds % 60;
-                    totalMinutes = Math.floor(totalSeconds / 60);
-                    minutes = totalMinutes % 60;
-                    hours = Math.floor(totalMinutes / 60);
+                const time = getTime(elapsedTime)
+                milliseconds = time.milliseconds
+                seconds = time.seconds
+                minutes = time.minutes
+                hours = time.hours
 
-                    timerElement.innerText = `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}:${milliseconds.toString().slice(0, 2)} `
-
-                    // console.log(`${hours.toString().padStart(2, "0")}h ${minutes}m ${seconds}s ${milliseconds}ms`);
-                }, 1);
+                timerElement.innerText = `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}:${milliseconds.toString().slice(0, 3)} `
+            }, 1);
             } else {
-                timeList.push(`${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}:${milliseconds.toString().slice(0, 2)}`)
-                console.log(timeList)
-                renderTimeList()
+                const recordedTime = {
+                    hours,
+                    minutes,
+                    seconds,
+                    milliseconds,
+                    str: `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}:${milliseconds.toString().slice(0, 3)}`
+                }
+                timeList.push(recordedTime)
+                renderTimeList(timeList)
+                renderStatList(timeList)
                 clearInterval(timer);
                 isRunning = false;
             }
         }
-        });
+    }
+}
 
+
+document.addEventListener("DOMContentLoaded", () => {
+    const timerElement = document.querySelector("#timer");
+    const toggleTimer = createTimer(timerElement)
+    document.addEventListener('keydown', toggleTimer)
 })
-
-
-
 </script>
 
 </html>
