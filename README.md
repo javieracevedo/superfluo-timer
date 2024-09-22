@@ -20,6 +20,11 @@ SuperFluo is a Rubik's cube timer with some additional features normally not fou
 
 - [x] Display the best time, and mean of all current solves.
 - [x] Add 15secs of inspection time before starting the timer
+
+### Version 0.3.x
+
+- [ ] Sessions
+- [ ] Persistance (with local storage)
   
 ### Version 1.0
 
