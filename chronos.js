@@ -3,19 +3,19 @@ import { renderStatList, renderTimeList } from "./renderers.js";
 
 
 export function chronos(timerElement) {
-    /* Separate stop timer, start timer, and record time blocks into separate functions*/
     let startTime;
+    
     let milliseconds 
     let seconds
     let minutes
     let hours
-    let timerInterval;
+
+    let timerInterval
+    let inspectionTimeInterval
+    
     let timeList = []
 
-    let inspectionActive = false
-
     const INSPECTION_TIME_SECONDS = 15
-
 
     const timer = (action) => {
         if (action == "stop") {
@@ -50,22 +50,23 @@ export function chronos(timerElement) {
     }
 
     const startInspection = () => {
-        if (inspectionActive) return
+        if (inspectionTimeInterval) return
 
         try {
             let inspectionTime = INSPECTION_TIME_SECONDS;
-            timerInterval = setInterval(() => {
-                timerElement.innerText = inspectionTime
+            timerElement.innerText = inspectionTime;
+            timerElement.style.color = "green"
+
+            inspectionTimeInterval = setInterval(() => {
                 inspectionTime = inspectionTime - 1;
+                timerElement.innerText = inspectionTime
+
                 if (inspectionTime < 0) {
-                    clearInterval(timerInterval)
-                    inspectionActive = false
+                    stopInspectionTimer()
                 }
             }, 1000);
-            inspectionActive = true;
         } 
         catch (e) {
-            inspectionActive = false
             console.error(error)
         }
 
@@ -73,8 +74,9 @@ export function chronos(timerElement) {
     }
 
     const stopInspectionTimer = () => {
-        clearInterval(timerInterval)
-        inspectionActive = false
+        clearInterval(inspectionTimeInterval)
+        inspectionTimeInterval = null;
+        timerElement.style.color = "black"
     }
 
     return { 
