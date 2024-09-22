@@ -1,6 +1,6 @@
 {
   "name": "superfluo-timer",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Rubik's cube timer",
   "main": "index.js",
   "scripts": {
