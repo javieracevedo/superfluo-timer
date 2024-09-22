@@ -10,18 +10,17 @@ SuperFluo is a Rubik's cube timer with some additional features normally not fou
 
 ## Roadmap to version 1.0
 
-### Version 0.1.0
+### Version 0.1.x
 
 - [x] Start new solve and finish current solve when the space key is pressed
 - [x] Reset timer when finishing current solve
 - [x] Display a list of time results to the left of the screen (stored in memory for now)
 
-### Version 0.2.0
+### Version 0.2.x
 
 - [x] Display the best time, and mean of all current solves.
-- [ ] Add 15secs of inspection time before starting the timer
- 
- 
+- [x] Add 15secs of inspection time before starting the timer
+  
 ### Version 1.0
 
 - [ ] All the features expected from a regular Rubik's cube timer.
