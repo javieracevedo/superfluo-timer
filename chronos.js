@@ -54,9 +54,12 @@ export function chronos(timerElement) {
 
         try {
             let inspectionTime = INSPECTION_TIME_SECONDS;
+
+            timerElement.innerText = inspectionTime;
             timerInterval = setInterval(() => {
-                timerElement.innerText = inspectionTime
                 inspectionTime = inspectionTime - 1;
+                timerElement.innerText = inspectionTime
+
                 if (inspectionTime < 0) {
                     clearInterval(timerInterval)
                     inspectionActive = false
