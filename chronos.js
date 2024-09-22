@@ -55,6 +55,7 @@ export function chronos(timerElement) {
         try {
             let inspectionTime = INSPECTION_TIME_SECONDS;
             timerElement.innerText = inspectionTime;
+            timerElement.style.color = "green"
 
             inspectionTimeInterval = setInterval(() => {
                 inspectionTime = inspectionTime - 1;
@@ -75,6 +76,7 @@ export function chronos(timerElement) {
     const stopInspectionTimer = () => {
         clearInterval(inspectionTimeInterval)
         inspectionTimeInterval = null;
+        timerElement.style.color = "black"
     }
 
     return { 
