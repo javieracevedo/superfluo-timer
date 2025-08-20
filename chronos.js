@@ -1,6 +1,9 @@
 import { getTime } from "./stats.js"
-import { renderStatList, renderTimeList } from "./renderers.js";
+import { renderStatList, renderTimeList, renderSession } from "./renderers.js";
+import { createSession } from "./sessions.js"
 
+let session = createSession("test")
+renderSession(session)
 
 export function chronos(timerElement) {
     let startTime;
@@ -27,6 +30,7 @@ export function chronos(timerElement) {
                 str: `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}:${milliseconds.toString().slice(0, 3)}`
             }
             timeList.push(recordedTime)
+            debugger;
 
             renderTimeList(timeList)
             renderStatList(timeList)
@@ -42,6 +46,8 @@ export function chronos(timerElement) {
                 seconds = time.seconds
                 minutes = time.minutes
                 hours = time.hours
+
+                session = 
 
                 timerElement.innerText = `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}:${milliseconds.toString().slice(0, 3)} `
             }, 1);

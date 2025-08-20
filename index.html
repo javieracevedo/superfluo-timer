@@ -11,10 +11,22 @@
     <div id="app">
         <h1>SuperFluo Timer</h1>
 
+
+        <div id="session-container">
+            <input id="session-name-input" type="text" />
+            <button id="create-session-button">Create</button>
+            <select id="session-select" name="sessions">
+                <option value="">--Select Session--</option>
+                <option value="dog">Session 1</option>
+                <option value="cat">Session 2</option>
+                <option value="hamster">Session 3</option>
+            </select>
+        </div>
+
         <div id="list-container">
-            <h5>Time List</h5>
+            <h5>Time List (<span class="current-session-name"></span>)</h5>
             <ul id="time-list"></ul>
-            <h5>Stats</h5>
+            <h5>Stats (<span class="current-session-name"></span>)</h5>
             <ul id="stat-list">
                 <li>Best: <span class="best-time-val"></span></li>
                 <li>Mean: <span class="mean-val"></span></li>
@@ -81,6 +93,26 @@
         padding: 20px;
         max-width: fit-content;
         margin: auto;
+    }
+
+    #session-container {
+        width: 200px;
+        margin-bottom: 20px;
+    }
+
+    #session-name-input {
+        display: block;
+        width: 100%;
+        margin-bottom: 5px;
+    }
+
+    #create-session-button {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    #session-select {
+        width: 100%;
     }
 </style>
 </html>

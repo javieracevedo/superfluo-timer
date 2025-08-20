@@ -23,6 +23,11 @@ export function renderStatList(list) {
     meanElement.innerText = mean
 }
 
+export function renderSession(currentSession) {
+    const currentSessionLabels = document.querySelectorAll('.current-session-name')
+    currentSessionLabels.forEach((element) => element.innerHTML = currentSession.name)
+}
+
 
 export default {
     renderTimeList,
