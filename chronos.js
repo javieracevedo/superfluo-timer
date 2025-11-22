@@ -1,123 +1,76 @@
 import { getTime } from "./stats.js"
-import { renderStatList, renderTimeList, renderSession } from "./renderers.js";
-import { createSession } from "./sessions.js"
 
-let session = createSession("Default Session")
-let timeList = session.times
-renderSession(session)
+export class Timer {
+    constructor(store) {
+        this.store = store
+        this.timerInterval = null
+        this.inspectionInterval = null
+        this.startTime = null
+    }
 
-export function switchSession(sessionName) {
-    session = createSession(sessionName)
-    timeList = session.times
-    renderSession(session)
-    renderTimeList(timeList)
-    renderStatList(timeList)
-}
+    startInspection() {
+        if (this.inspectionInterval) return
 
-export function createNewSession(name) {
-    const newSession = createSession(name)
-    session = newSession
-    timeList = session.times
+        let inspectionTime = 15
+        this.store.updateInspectionTime(inspectionTime)
+        this.store.setTimerState("INSPECTING")
 
-    const sessionSelect = document.querySelector("#session-select")
-    const option = document.createElement("option")
-    option.innerText = newSession.name
-    option.value = newSession.name
-    sessionSelect.appendChild(option)
-    sessionSelect.value = newSession.name
+        this.inspectionInterval = setInterval(() => {
+            inspectionTime--
+            this.store.updateInspectionTime(inspectionTime)
 
-    renderSession(session)
-    renderTimeList(timeList)
-    renderStatList(timeList)
-}
-
-export function chronos(timerElement) {
-    let startTime;
-
-    let milliseconds
-    let seconds
-    let minutes
-    let hours
-
-    let timerInterval
-    let inspectionTimeInterval
-
-
-
-    const INSPECTION_TIME_SECONDS = 15
-
-    const timer = (action) => {
-        if (action == "stop") {
-            const recordedTime = {
-                hours,
-                minutes,
-                seconds,
-                milliseconds,
-                str: `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}:${milliseconds.toString().slice(0, 3)}`
+            if (inspectionTime <= 0) {
+                this.stopInspection() // Or auto-start solve? For now just stop/fail
             }
-            timeList.push(recordedTime)
-            debugger;
+        }, 1000)
+    }
 
-            renderTimeList(timeList)
-            renderStatList(timeList)
-
-            clearInterval(timerInterval);
-        } else if (action == "start") {
-            startTime = Date.now();
-            timerInterval = setInterval(() => {
-                let elapsedTime = Date.now() - startTime;
-
-                const time = getTime(elapsedTime)
-                milliseconds = time.milliseconds
-                seconds = time.seconds
-                minutes = time.minutes
-                hours = time.hours
-
-                session =
-
-                    timerElement.innerText = `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}:${milliseconds.toString().slice(0, 3)} `
-            }, 1);
-            return timerInterval;
+    stopInspection() {
+        if (this.inspectionInterval) {
+            clearInterval(this.inspectionInterval)
+            this.inspectionInterval = null
         }
     }
 
-    const startInspection = () => {
-        if (inspectionTimeInterval) return
+    startSolve() {
+        this.stopInspection()
+        this.startTime = Date.now()
+        this.store.setTimerState("SOLVING")
 
-        try {
-            let inspectionTime = INSPECTION_TIME_SECONDS;
-            timerElement.innerText = inspectionTime;
-            timerElement.style.color = "green"
-
-            inspectionTimeInterval = setInterval(() => {
-                inspectionTime = inspectionTime - 1;
-                timerElement.innerText = inspectionTime
-
-                if (inspectionTime < 0) {
-                    stopInspectionTimer()
-                }
-            }, 1000);
-        }
-        catch (e) {
-            console.error(error)
-        }
-
-        return stopInspectionTimer
+        this.timerInterval = setInterval(() => {
+            const elapsed = Date.now() - this.startTime
+            this.store.updateTime(elapsed)
+        }, 10) // Update every 10ms
     }
 
-    const stopInspectionTimer = () => {
-        clearInterval(inspectionTimeInterval)
-        inspectionTimeInterval = null;
-        timerElement.style.color = "black"
+    stopSolve() {
+        if (this.timerInterval) {
+            clearInterval(this.timerInterval)
+            this.timerInterval = null
+
+            const elapsed = Date.now() - this.startTime
+            const timeObj = getTime(elapsed)
+
+            // Format string for display/storage
+            timeObj.str = `${timeObj.hours.toString().padStart(2, "0")}:${timeObj.minutes.toString().padStart(2, "0")}:${timeObj.seconds.toString().padStart(2, "0")}:${timeObj.milliseconds.toString().slice(0, 3)}`
+
+            this.store.addTime(timeObj)
+            this.store.setTimerState("IDLE")
+            this.store.updateTime(0) // Reset display or keep final time? Usually keep final until next start.
+            // Actually, let's keep the final time in display by NOT resetting elapsedTime to 0 immediately,
+            // but the state is IDLE. The renderer should handle "IDLE" by showing 0 or the last time?
+            // For now, let's reset to 0 on start, so here we leave it as is.
+        }
     }
 
-    return {
-        timer,
-        startInspection,
-        stopInspectionTimer,
-        switchSession,
-        createNewSession
+    toggle() {
+        const state = this.store.getState().timerState
+        if (state === "IDLE") {
+            this.startInspection()
+        } else if (state === "INSPECTING") {
+            this.startSolve()
+        } else if (state === "SOLVING") {
+            this.stopSolve()
+        }
     }
 }
-
-export default chronos
