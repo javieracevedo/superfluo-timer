@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from 'https://cdn.jsdelivr.net/npm/uuid@11.0.3/+esm';
+
 export const VALID_STATES = {
     IDLE: "IDLE",
     INSPECTING: "INSPECTING",
@@ -57,7 +59,7 @@ export class Store {
 
     addSession(name) {
         const newSession = {
-            id: Date.now().toString(),
+            id: uuidv4(),
             name,
             times: []
         }
@@ -81,7 +83,17 @@ export class Store {
     addTime(timeObject) {
         const session = this.getCurrentSession()
         if (session) {
+            timeObject.id = uuidv4()
             session.times.push(timeObject)
+            this.save()
+            this.notify()
+        }
+    }
+
+    removeTime(timeId) {
+        const session = this.getCurrentSession()
+        if (session) {
+            session.times = session.times.filter(t => t.id !== timeId)
             this.save()
             this.notify()
         }

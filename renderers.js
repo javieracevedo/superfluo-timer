@@ -1,5 +1,5 @@
 import { getBestTime, getMean, getTime } from "./stats.js"
-import { VALID_STATES } from "./store.js"
+import { VALID_STATES, store } from "./store.js"
 
 export function renderApp(state) {
     renderTimer(state)
@@ -55,9 +55,20 @@ function renderTimeList(state) {
     listContainer.innerHTML = ""
 
     // Show latest first? Or last? The original appended, so latest at bottom.
-    currentSession.times.forEach(({ str }) => {
+    currentSession.times.forEach((time) => {
         const li = document.createElement("li")
-        li.innerText = str
+        li.innerText = time.str + " "
+
+        const deleteBtn = document.createElement("button")
+        deleteBtn.innerText = "X"
+        deleteBtn.style.marginLeft = "10px"
+        deleteBtn.style.cursor = "pointer"
+        deleteBtn.style.color = "red"
+        deleteBtn.onclick = () => {
+            store.removeTime(time.id)
+        }
+
+        li.appendChild(deleteBtn)
         listContainer.appendChild(li)
     })
 }

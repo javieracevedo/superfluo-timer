@@ -25,11 +25,13 @@ SuperFluo is a Rubik's cube timer with some additional features normally not fou
 
 - [x] Sessions
 - [x] Persistance (with local storage)
-- [ ] Option to delete entry from time list
+- [x] Option to delete entry from time list
   
 ### Version 1.0
 
 - [ ] All the features expected from a regular Rubik's cube timer.
+    - WCA style scrambles for all common types of cubes (3x3, 4x4, 5x5, 6x6, 7x7, 8x8, 9x9, 10x10, 11x11, 12x12)
+    - Support for all common types of puzzles (Rubik's cube, Rubik's Revenge, Megaminx, Pyraminx, Skewb, Square-1)
 - [ ] Support connecting the user's webcam to the timer.
 - [ ] Record webcam feed on each solve and store that recording in local storage.
 - [ ] Add option to show recording of each timed solve.
