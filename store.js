@@ -6,17 +6,25 @@ export const VALID_STATES = {
 
 export class Store {
     constructor() {
-        this.state = {
-            sessions: [],
-            currentSessionId: null,
-            timerState: VALID_STATES.IDLE,
-            elapsedTime: 0,
-            inspectionTime: 15
+        const savedState = localStorage.getItem("superfluo-state")
+        if (savedState) {
+            this.state = JSON.parse(savedState)
+            // Ensure timer state is reset on reload
+            this.state.timerState = VALID_STATES.IDLE
+            this.state.elapsedTime = 0
+            this.state.inspectionTime = 15
+        } else {
+            this.state = {
+                sessions: [],
+                currentSessionId: null,
+                timerState: VALID_STATES.IDLE,
+                elapsedTime: 0,
+                inspectionTime: 15
+            }
+            // Initialize with default session
+            this.addSession("Default Session")
         }
         this.listeners = []
-
-        // Initialize with default session
-        this.addSession("Default Session")
     }
 
     subscribe(listener) {
@@ -28,6 +36,15 @@ export class Store {
 
     notify() {
         this.listeners.forEach(listener => listener(this.state))
+    }
+
+    save() {
+        // Only save persistent data
+        const persistentState = {
+            sessions: this.state.sessions,
+            currentSessionId: this.state.currentSessionId
+        }
+        localStorage.setItem("superfluo-state", JSON.stringify(persistentState))
     }
 
     getState() {
@@ -46,6 +63,7 @@ export class Store {
         }
         this.state.sessions.push(newSession)
         this.state.currentSessionId = newSession.id
+        this.save()
         this.notify()
         return newSession
     }
@@ -55,6 +73,7 @@ export class Store {
         const session = this.state.sessions.find(s => s.id === sessionId || s.name === sessionId)
         if (session) {
             this.state.currentSessionId = session.id
+            this.save()
             this.notify()
         }
     }
@@ -63,6 +82,7 @@ export class Store {
         const session = this.getCurrentSession()
         if (session) {
             session.times.push(timeObject)
+            this.save()
             this.notify()
         }
     }

@@ -23,8 +23,8 @@ SuperFluo is a Rubik's cube timer with some additional features normally not fou
 
 ### Version 0.3.x
 
-- [ ] Sessions
-- [ ] Persistance (with local storage)
+- [x] Sessions
+- [x] Persistance (with local storage)
 - [ ] Option to delete entry from time list
   
 ### Version 1.0
