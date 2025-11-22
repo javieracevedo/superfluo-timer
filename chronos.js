@@ -3,20 +3,29 @@ import { renderStatList, renderTimeList, renderSession } from "./renderers.js";
 import { createSession } from "./sessions.js"
 
 let session = createSession("test")
+let timeList = session.times
 renderSession(session)
+
+export function switchSession(sessionName) {
+    session = createSession(sessionName)
+    timeList = session.times
+    renderSession(session)
+    renderTimeList(timeList)
+    renderStatList(timeList)
+}
 
 export function chronos(timerElement) {
     let startTime;
-    
-    let milliseconds 
+
+    let milliseconds
     let seconds
     let minutes
     let hours
 
     let timerInterval
     let inspectionTimeInterval
-    
-    let timeList = []
+
+
 
     const INSPECTION_TIME_SECONDS = 15
 
@@ -34,7 +43,7 @@ export function chronos(timerElement) {
 
             renderTimeList(timeList)
             renderStatList(timeList)
-            
+
             clearInterval(timerInterval);
         } else if (action == "start") {
             startTime = Date.now();
@@ -47,9 +56,9 @@ export function chronos(timerElement) {
                 minutes = time.minutes
                 hours = time.hours
 
-                session = 
+                session =
 
-                timerElement.innerText = `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}:${milliseconds.toString().slice(0, 3)} `
+                    timerElement.innerText = `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}:${milliseconds.toString().slice(0, 3)} `
             }, 1);
             return timerInterval;
         }
@@ -71,7 +80,7 @@ export function chronos(timerElement) {
                     stopInspectionTimer()
                 }
             }, 1000);
-        } 
+        }
         catch (e) {
             console.error(error)
         }
@@ -85,10 +94,11 @@ export function chronos(timerElement) {
         timerElement.style.color = "black"
     }
 
-    return { 
+    return {
         timer,
         startInspection,
-        stopInspectionTimer 
+        stopInspectionTimer,
+        switchSession
     }
 }
 
