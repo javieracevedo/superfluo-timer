@@ -15,6 +15,7 @@ createSessionButton.addEventListener("click", () => {
 })
 
 function handleKeyEvent(event) {
+    if (event.target.tagName === "INPUT") return
     mutateState(event);
 }
 
