@@ -6,6 +6,26 @@ export const renderScramble = (state) => {
     if (scrambleContainer) {
         scrambleContainer.innerText = state.currentScramble
     }
+
+    const twistyPlayer = document.querySelector("#scramble-visualization")
+    if (twistyPlayer) {
+        const puzzleMapping = {
+            "333": "3x3x3",
+            "222": "2x2x2",
+            "444": "4x4x4",
+            "555": "5x5x5",
+            "666": "6x6x6",
+            "777": "7x7x7",
+            "pyram": "pyraminx",
+            "minx": "megaminx",
+            "skewb": "skewb",
+            "sq1": "square1",
+            "clock": "clock"
+        }
+        twistyPlayer.alg = state.currentScramble
+        twistyPlayer.puzzle = puzzleMapping[state.currentEvent] || "3x3x3"
+    }
+
     const eventSelect = document.querySelector("#event-select")
     if (eventSelect && eventSelect.value !== state.currentEvent) {
         eventSelect.value = state.currentEvent

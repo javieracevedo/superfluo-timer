@@ -1,6 +1,7 @@
 import { store } from "./store.js"
 import { Timer } from "./chronos.js"
 import { renderApp } from "./renderers.js"
+import "https://cdn.cubing.net/js/cubing/twisty";
 
 const timer = new Timer(store)
 

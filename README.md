@@ -30,8 +30,8 @@ SuperFluo is a Rubik's cube timer with some additional features normally not fou
 ### Version 1.0
 
 - [ ] All the features expected from a regular Rubik's cube timer.
-    - [ ] Scramble Generation (WCA-standard for all events)
-    - [ ] Scramble Visualization (2D/3D preview)
+    - [x] Scramble Generation (WCA-standard for all events)
+    - [x] Scramble Visualization (2D/3D preview)
     - [ ] Penalties (+2, DNF)
     - [ ] Advanced Statistics (Ao5, Ao12, Graphs, etc.)
 - [ ] Support connecting the user's webcam to the timer.
