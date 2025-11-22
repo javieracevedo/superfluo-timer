@@ -2,7 +2,7 @@ import { getTime } from "./stats.js"
 import { renderStatList, renderTimeList, renderSession } from "./renderers.js";
 import { createSession } from "./sessions.js"
 
-let session = createSession("test")
+let session = createSession("Default Session")
 let timeList = session.times
 renderSession(session)
 
