@@ -1,12 +1,23 @@
 import { getBestTime, getMean, getTime } from "./stats.js"
 import { VALID_STATES, store } from "./store.js"
 
-export function renderApp(state) {
+export const renderScramble = (state) => {
+    const scrambleContainer = document.querySelector("#scramble-container")
+    if (scrambleContainer) {
+        scrambleContainer.innerText = state.currentScramble
+    }
+    const eventSelect = document.querySelector("#event-select")
+    if (eventSelect && eventSelect.value !== state.currentEvent) {
+        eventSelect.value = state.currentEvent
+    }
+}
+
+export const renderApp = (state) => {
     renderTimer(state)
-    renderSessionInfo(state)
     renderTimeList(state)
     renderStats(state)
-    renderSessionDropdown(state)
+    renderSessionSelect(state)
+    renderScramble(state)
 }
 
 function renderTimer(state) {
@@ -91,7 +102,7 @@ function renderStats(state) {
     }
 }
 
-function renderSessionDropdown(state) {
+function renderSessionSelect(state) {
     const sessionSelect = document.querySelector("#session-select")
 
     // Only update options if length changed to avoid losing focus or selection state issues

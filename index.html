@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
 
     <title>SuperFluo Timer</title>
 </head>
+
 <body>
     <div id="app">
         <h1>SuperFluo Timer</h1>
@@ -20,28 +22,52 @@
             </select>
         </div>
 
-        <div id="list-container">
-            <h5>Time List (<span class="current-session-name"></span>)</h5>
-            <ul id="time-list"></ul>
-            <h5>Stats (<span class="current-session-name"></span>)</h5>
-            <ul id="stat-list">
-                <li>Best: <span class="best-time-val"></span></li>
-                <li>Mean: <span class="mean-val"></span></li>
-            </ul>
+        <div id="scramble-container"
+            style="font-size: 1.5rem; margin-bottom: 20px; text-align: center; font-family: monospace; min-height: 1.5em;">
+            Loading scramble...
         </div>
 
-        <div id="timer">00:00:00:00</div>
-
-        <div id="start-stop-message">
-            HIT SPACE TO START/STOP
+        <div id="controls-container" style="margin-bottom: 20px; display: flex; gap: 10px; justify-content: center;">
+            <select id="event-select" style="padding: 5px; font-size: 1rem;">
+                <!-- Values must match EVENTS in store.js -->
+                <option value="333">3x3x3</option>
+                <option value="222">2x2x2</option>
+                <option value="444">4x4x4</option>
+                <option value="555">5x5x5</option>
+                <option value="666">6x6x6</option>
+                <option value="777">7x7x7</option>
+                <option value="pyram">Pyraminx</option>
+                <option value="minx">Megaminx</option>
+                <option value="skewb">Skewb</option>
+                <option value="sq1">Square-1</option>
+                <option value="clock">Clock</option>
+            </select>
         </div>
-    </div>
+
+        <div id="timer-container">
+            <div id="list-container">
+                <h5>Time List (<span class="current-session-name"></span>)</h5>
+                <ul id="time-list"></ul>
+                <h5>Stats (<span class="current-session-name"></span>)</h5>
+                <ul id="stat-list">
+                    <li>Best: <span class="best-time-val"></span></li>
+                    <li>Mean: <span class="mean-val"></span></li>
+                </ul>
+            </div>
+
+            <div id="timer">00:00:00:00</div>
+
+            <div id="start-stop-message">
+                HIT SPACE TO START/STOP
+            </div>
+        </div>
 </body>
 
 <style>
     * {
         box-sizing: border-box;
     }
+
     h1 {
         text-align: center;
         font-size: 56px;
@@ -72,6 +98,7 @@
         margin-bottom: 8px;
         padding-left: 32px;
     }
+
     #stat-list {
         list-style-type: none;
         padding-left: 0;
@@ -112,4 +139,5 @@
         width: 100%;
     }
 </style>
+
 </html>

@@ -60,3 +60,9 @@ createSessionButton.addEventListener("click", () => {
         sessionNameInput.value = ""
     }
 })
+
+// Event Selector
+const eventSelect = document.querySelector("#event-select");
+eventSelect.addEventListener("change", (event) => {
+    store.setEvent(event.target.value)
+})
