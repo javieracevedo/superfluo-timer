@@ -14,6 +14,23 @@ export function switchSession(sessionName) {
     renderStatList(timeList)
 }
 
+export function createNewSession(name) {
+    const newSession = createSession(name)
+    session = newSession
+    timeList = session.times
+
+    const sessionSelect = document.querySelector("#session-select")
+    const option = document.createElement("option")
+    option.innerText = newSession.name
+    option.value = newSession.name
+    sessionSelect.appendChild(option)
+    sessionSelect.value = newSession.name
+
+    renderSession(session)
+    renderTimeList(timeList)
+    renderStatList(timeList)
+}
+
 export function chronos(timerElement) {
     let startTime;
 
@@ -98,7 +115,8 @@ export function chronos(timerElement) {
         timer,
         startInspection,
         stopInspectionTimer,
-        switchSession
+        switchSession,
+        createNewSession
     }
 }
 
