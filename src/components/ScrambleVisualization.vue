@@ -7,7 +7,7 @@
       background="none"
       :alg="store.currentScramble"
       :puzzle="puzzleMapping[store.currentEvent] || '3x3x3'"
-      style="width: 300px; height: 300px;"
+      class="twisty-player"
     ></twisty-player>
   </div>
 </template>
@@ -37,5 +37,10 @@ const puzzleMapping = {
     display: flex;
     justify-content: center;
     margin-bottom: 20px;
+}
+
+.twisty-player {
+    width: 300px;
+    height: 300px;
 }
 </style>
