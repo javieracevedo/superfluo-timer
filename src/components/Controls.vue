@@ -1,6 +1,6 @@
 <template>
   <div id="controls">
-    <select :value="store.currentEvent" @change="handleChange" style="padding: 5px; font-size: 1rem;">
+    <select :value="store.currentEvent" @change="handleChange" class="event-select">
         <option v-for="(label, value) in eventOptions" :key="value" :value="value">
             {{ label }}
         </option>
@@ -9,7 +9,7 @@
 </template>
 
 <script setup>
-import { store, actions, EVENTS } from '../store/store'
+import { store, actions, EVENTS } from '@/store/store'
 
 const eventOptions = {
     [EVENTS.THREE]: "3x3x3",
@@ -29,3 +29,10 @@ const handleChange = (event) => {
     actions.setEvent(event.target.value)
 }
 </script>
+
+<style scoped>
+.event-select {
+    padding: 5px;
+    font-size: 1rem;
+}
+</style>

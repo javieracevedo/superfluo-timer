@@ -32,14 +32,14 @@
 </template>
 
 <script setup>
-import SessionManager from './components/SessionManager.vue'
-import ScrambleDisplay from './components/ScrambleDisplay.vue'
-import ScrambleVisualization from './components/ScrambleVisualization.vue'
-import Controls from './components/Controls.vue'
-import StatsDisplay from './components/StatsDisplay.vue'
-import TimerDisplay from './components/TimerDisplay.vue'
+import SessionManager from '@/components/SessionManager.vue'
+import ScrambleDisplay from '@/components/ScrambleDisplay.vue'
+import ScrambleVisualization from '@/components/ScrambleVisualization.vue'
+import Controls from '@/components/Controls.vue'
+import StatsDisplay from '@/components/StatsDisplay.vue'
+import TimerDisplay from '@/components/TimerDisplay.vue'
 import { onMounted, onUnmounted } from 'vue'
-import { useTimer } from './composables/useTimer'
+import { useTimer } from '@/composables/useTimer'
 
 const { handleKeyDown, handleKeyUp } = useTimer()
 

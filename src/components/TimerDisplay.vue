@@ -5,8 +5,8 @@
 </template>
 
 <script setup>
-import { store, VALID_STATES } from '../store/store'
-import { getTime, formatTime } from '../utils/stats'
+import { store, VALID_STATES } from '@/store/store'
+import { getTime, formatTime } from '@/utils/stats'
 import { computed } from 'vue'
 
 const timerColor = computed(() => {

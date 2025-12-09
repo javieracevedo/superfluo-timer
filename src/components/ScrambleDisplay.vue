@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-import { store } from '../store/store'
+import { store } from '@/store/store'
 </script>
 
 <style scoped>

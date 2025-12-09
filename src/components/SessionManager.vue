@@ -17,7 +17,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import { store, actions } from '../store/store'
+import { store, actions } from '@/store/store'
 
 const newSessionName = ref('')
 

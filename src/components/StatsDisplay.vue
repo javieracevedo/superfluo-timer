@@ -16,9 +16,9 @@
 </template>
 
 <script setup>
-import { store, actions } from '../store/store'
+import { store, actions } from '@/store/store'
 import { computed } from 'vue'
-import { getBestTime, getMean } from '../utils/stats'
+import { getBestTime, getMean } from '@/utils/stats'
 
 const currentSession = computed(() => {
     return store.sessions.find(s => s.id === store.currentSessionId)

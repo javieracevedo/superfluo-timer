@@ -1,5 +1,5 @@
-import { store, actions, VALID_STATES } from '../store/store'
-import { getTime, formatTime } from '../utils/stats'
+import { store, actions, VALID_STATES } from '@/store/store'
+import { getTime, formatTime } from '@/utils/stats'
 
 let timerInterval = null
 let inspectionInterval = null
